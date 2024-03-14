@@ -1,6 +1,6 @@
 package main
 
-import "gophercises/cmd"
+import "github.com/baimiyishu13/x/cmd"
 
 func main() {
 	cmd.Execute()

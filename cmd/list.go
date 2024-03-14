@@ -23,7 +23,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Installable components:")
 		for _, component := range components {
-			fmt.Printf("\t🦠%s\n", component)
+			fmt.Printf("\t %s\n", component)
 		}
 	},
 }

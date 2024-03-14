@@ -31,3 +31,5 @@ bin/
 *.prof/
 *.exe/
 *.out/
+
+.DS_Store
