@@ -14,16 +14,14 @@ var vmagentCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		dataDir := args[0]
 		vmip := args[1]
-		fmt.Println(dataDir, vmip)
 		installVMAgent(dataDir, vmip)
 	},
 }
 
 func installVMAgent(dataDir string, vmip string) {
 	fmt.Println("Installing vmagent...")
-
 	// Step 1: Create data directory and decompress to it
-	cmd := exec.Command("bash", "-c", fmt.Sprintf("mkdir -p %s && tar -zxvf vmutils-linux-amd64-v1.99.0.tar.gz -C %s", dataDir, dataDir))
+	cmd := exec.Command("bash", "-c", fmt.Sprintf("mkdir -p %s && cp ./bin/vmagent-prod %s", dataDir, dataDir))
 	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Failed to create data directory and decompress vmagent: %v\n", err)
@@ -32,14 +30,14 @@ func installVMAgent(dataDir string, vmip string) {
 
 	config := `global:
   external_labels:
-	# 环境标签
+    # 环境标签
     #datacenter: ceshi 
 scrape_configs:
   #- job_name: node-exporter
   #  static_configs:
   #  - targets: ['1.1.1.1:9101','1.1.1.2:9101'] # 修改为监控的node节点IP
   #- job_name: mysql-exporter 
-  #- job_name: etcd-exporter 
+  #- job_name: etcd-exporter
 `
 
 	cmd = exec.Command("bash", "-c", fmt.Sprintf("echo '%s' > %s/vmagent.yml", config, dataDir))

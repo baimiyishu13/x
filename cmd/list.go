@@ -7,10 +7,16 @@ import (
 )
 
 var components = []string{
-	"vmagent",
-	"node-exporter",
-	"etcd-exporter",
-	"mysql-exporter",
+	"🚀 vmagent",
+	"🤕 vmalert",
+	"🤕 victoriaMetrics",
+	"🤕 grafnan",
+	"🤕 prometheus",
+	"🤕 alertmanager",
+	"🚀 nodeExporter",
+	"🤕 etcdExporter",
+	"🤕 mysqlExporter",
+	"🤕 mongoExporter",
 }
 
 // listCmd represents the list command
@@ -20,7 +26,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Installable components:")
 		for _, component := range components {
-			fmt.Printf("\t🚀 %s\n", component)
+			fmt.Printf("\t%s\n", component)
 		}
 	},
 }

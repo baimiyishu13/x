@@ -33,3 +33,5 @@ bin/
 *.out/
 
 .DS_Store
+
+assets

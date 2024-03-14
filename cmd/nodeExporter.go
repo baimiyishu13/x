@@ -18,9 +18,8 @@ var nodeExporterCmd = &cobra.Command{
 
 func installNodeExporter() {
 	fmt.Println("Installing node exporter...")
-
 	// Step 2: Decompress node_exporter and move it
-	cmd := exec.Command("tar", "-zxvf", "node_exporter-1.7.0.linux-amd64.tar.gz", "-C", "/usr/local/bin/", "--strip-components=1")
+	cmd := exec.Command("bash", "-c", "cp ./bin/node_exporter /usr/local/bin/")
 	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Failed to decompress and move node_exporter: %v\n", err)
