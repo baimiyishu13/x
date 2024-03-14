@@ -10,7 +10,7 @@ var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Install a component",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("install called")
+		fmt.Println("install -h")
 	},
 }
 
