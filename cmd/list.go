@@ -15,7 +15,7 @@ var components = []string{
 	"🤕 alertmanager",
 	"🚀 nodeExporter",
 	"🚀 etcdExporter",
-	"🤕 mysqlExporter",
+	"🚀 mysqlExporter",
 	"🤕 mongoExporter",
 }
 
