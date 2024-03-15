@@ -14,7 +14,7 @@ var components = []string{
 	"🤕 prometheus",
 	"🤕 alertmanager",
 	"🚀 nodeExporter",
-	"🤕 etcdExporter",
+	"🚀 etcdExporter",
 	"🤕 mysqlExporter",
 	"🤕 mongoExporter",
 }
