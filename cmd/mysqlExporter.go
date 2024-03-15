@@ -1,40 +1,67 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
+	"os/exec"
 
 	"github.com/spf13/cobra"
 )
 
-// mysqlExporterCmd represents the mysqlExporter command
 var mysqlExporterCmd = &cobra.Command{
-	Use:   "mysqlExporter",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "mysqlExporter [user] [password]",
+	Short: "Install MySQL Exporter",
+	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("mysqlExporter called")
+		user := args[0]
+		password := args[1]
+		fmt.Println("Installing mysql exporter...")
+		installMysqlExporter(user, password)
 	},
+}
+
+func installMysqlExporter(user, password string) {
+	cmd := exec.Command("bash", "-c", "mkdir -p /etc/mysqlexporter && echo -e \"[client]\nuser="+user+"\npassword="+password+"\" > /etc/mysqlexporter/.my.cnf")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("Failed to create .my.cnf file: %v\n", err)
+		return
+	}
+
+	cmd = exec.Command("bash", "-c", "cp ./bin/mysqld_exporter  /usr/local/bin/")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Failed to decompress and move nmysqld_exporter : %v\n", err)
+		return
+	}
+	service := `
+[Unit]
+Description=mysql Exporter
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/mysqld_exporter  --config.my-cnf=/etc/mysqlexporter/.my.cnf 
+
+[Install]
+WantedBy=multi-user.target
+`
+	cmd = exec.Command("bash", "-c", fmt.Sprintf("echo '%s' > /etc/systemd/system/mysql_exporter.service", service))
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Failed to create service file: %v\n", err)
+		return
+	}
+	cmd = exec.Command("bash", "-c", "systemctl daemon-reload && systemctl start mysql_exporter.service && systemctl enable mysql_exporter.service")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Failed to start the service: %v\n", err)
+		return
+	}
+
+	fmt.Println("🎉 Mysql exporter installed successfully.")
+
 }
 
 func init() {
 	installCmd.AddCommand(mysqlExporterCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// mysqlExporterCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// mysqlExporterCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
