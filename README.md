@@ -6,12 +6,25 @@
 ---
 
 所有均二进制安装：当前支持
- ![image-20240314214034634](./images/README/image-20240314214034634.png)
+ ```
+ ➜  x git:(main) ✗ go run main.go install list
+ Installable components:
+         🎉 vmagent
+         🤕 vmalert
+         🤕 victoriaMetrics
+         🚀 grafnan
+         🤕 prometheus
+         🤕 alertmanager
+         🎉 nodeExporter
+         🚀 etcdExporter
+         🎉 mysqlExporter
+         🤕 mongoExporter
+ ```
 
 用法构建：
 
 ```
-    GOOS=linux GOARCH=amd64 go build -o ./bin/
+GOOS=linux GOARCH=amd64 go build -o ./bin/
 ```
 
 准备： 将所需安装二进制文件放在 x 文件的 ./bin 下

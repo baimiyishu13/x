@@ -7,15 +7,15 @@ import (
 )
 
 var components = []string{
-	"🚀 vmagent",
+	"🎉 vmagent",
 	"🤕 vmalert",
 	"🤕 victoriaMetrics",
-	"🤕 grafnan",
-	"🤕 prometheus",
+	"🚀 grafnan",
+	"❌ prometheus",
 	"🤕 alertmanager",
-	"🚀 nodeExporter",
+	"🎉 nodeExporter",
 	"🚀 etcdExporter",
-	"🚀 mysqlExporter",
+	"🎉 mysqlExporter",
 	"🤕 mongoExporter",
 }
 
