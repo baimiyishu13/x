@@ -1,0 +1,20 @@
+groups:
+  - name: MySQL 宕机
+    rules:
+      - alert: MySQL 宕机
+        expr: mysql_up == 0
+        for: 1m
+        labels:
+          severity: 严重
+        annotations:
+          summary: "MySQL 宕机 (实例 {{ $labels.instance }})"
+          description: "MySQL 实例 {{ $labels.instance }} 宕机。"
+
+  - name:  MySQL 重新启动
+    expr: mysql_global_status_uptime < 60
+    for: 0m
+    labels:
+      severity: info
+    annotations:
+        summary: "MySQL 重新启动 (实例 {{ $labels.instance }})"
+        description: "MySQL 实例 {{ $labels.instance }} 重新启动。"
