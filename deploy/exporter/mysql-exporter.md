@@ -54,4 +54,16 @@ systemctl enable mysql_exporter.service
 curl 127.0.0.1:9104/metrics
 ```
 
+接入：
+
+```shell
+- job_name: 'mysql'
+  static_configs:
+  - targets: ['mysql-exporter:9104']
+```
+
+```shell
+```
+
 Grafana 模版 ID ：17320
+
