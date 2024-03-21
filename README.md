@@ -13,7 +13,7 @@ deploy
 
 参考架构：
 
- <img src="./images/README/x.png" alt="x" style="zoom: 25%;" />
+ <img src="./images/README/x.png" alt="x" width="60%" />
 
 ---
 
