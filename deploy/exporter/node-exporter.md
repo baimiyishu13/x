@@ -43,3 +43,10 @@ systemctl restart node_exporter.service
 systemctl status node_exporter.service
 systemctl enable node_exporter.service
 ```
+
+接入：
+```shell
+- job_name: 'node'
+  static_configs:
+  - targets: ['localhost:9101']
+```
