@@ -1,9 +1,30 @@
 # x
+
+🎉 目录说明：
+
+```sh
+deploy
+├── exporter							# exporter 部署文档
+├── kube-state-metrics		# 监控 kubernetes
+├── rules									# 告警规则
+```
+
+---
+
 参考架构：
+
+![x](./images/README/x.png)
+
+---
+
+
+
+监控部署
 
 ---
 
 所有均二进制安装：当前支持
+
  ```
  ➜  x git:(main) ✗ go run main.go install list
  Installable components:
