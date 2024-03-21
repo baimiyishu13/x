@@ -11,10 +11,12 @@ groups:
           description: "MySQL 实例 {{ $labels.instance }} 宕机。"
 
   - name:  MySQL 重新启动
-    expr: mysql_global_status_uptime < 60
-    for: 0m
-    labels:
-      severity: info
-    annotations:
-        summary: "MySQL 重新启动 (实例 {{ $labels.instance }})"
-        description: "MySQL 实例 {{ $labels.instance }} 重新启动。"
+    rules:
+      - alert: MySQL 重新启动
+        expr: mysql_global_status_uptime < 60
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+            summary: "MySQL 重新启动 (实例 {{ $labels.instance }})"
+            description: "MySQL 实例 {{ $labels.instance }} 重新启动。"
