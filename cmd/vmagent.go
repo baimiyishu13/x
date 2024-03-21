@@ -54,7 +54,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=%s/vmagent-prod -promscrape.config=%s/vmagent.yml -remoteWrite.url=http://%s:8428/api/v1/write
+ExecStart=%s/vmagent-prod -promscrape.config.yaml=%s/vmagent.yml -remoteWrite.url=http://%s:8428/api/v1/write
 Restart=always
 
 [Install]

@@ -18,5 +18,5 @@ EOF
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
     -keyout key.pem -out cert.pem \
     -subj "/C=CN/ST=shanxi/L=xian/O=IT/CN=monitor" \
-    -config openssl.cnf
+    -config.yaml openssl.cnf
 ```

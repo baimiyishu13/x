@@ -1,0 +1,63 @@
+  - job_name: kube-state-metrics
+    static_configs:
+      - targets: ['1.1.1.1:18566']
+  - job_name: "k8s-cadvisor"
+    honor_timestamps: true
+    metrics_path: /metrics
+    scheme: https
+    kubernetes_sd_configs:
+      - api_server: https://1.1.1.1:6443
+        role: node
+        bearer_token_file: /data/k8s-apiserver_token
+        tls_config:
+          insecure_skip_verify: true
+    bearer_token_file: /data/k8s-apiserver_token
+    tls_config:
+      insecure_skip_verify: true
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: 1.1.1.1:6443
+        action: replace
+      - source_labels: [__meta_kubernetes_node_name]
+        separator: ;
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}:10250/proxy/metrics/cadvisor
+        action: replace
+    metric_relabel_configs:
+      - source_labels: [instance]
+        separator: ;
+        regex: (.+)
+        target_label: node
+        replacement: $1
+        action: replace
+  - job_name: "kube-node-kubelet"
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    bearer_token_file: /data/k8s-apiserver_token
+    kubernetes_sd_configs:
+      - role: node
+        api_server: "https://1.1.1.1:6443"
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /data/k8s-apiserver_token
+    relabel_configs:
+      - target_label: __address__
+        replacement: 1.1.1.1:6443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}:10250/proxy/metrics
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        action: replace
+        target_label: service_name

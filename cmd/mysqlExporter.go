@@ -40,7 +40,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/mysqld_exporter  --config.my-cnf=/etc/mysqlexporter/.my.cnf 
+ExecStart=/usr/local/bin/mysqld_exporter  --config.yaml.my-cnf=/etc/mysqlexporter/.my.cnf 
 
 [Install]
 WantedBy=multi-user.target
