@@ -30,5 +30,12 @@ systemctl status cassandra
  curl 127.0.0.1:7070/metrics
 ```
 
+接入：
+```shell
+- job_name: 'cassandra'
+  static_configs:
+  - targets: ['cassandra-ip:7070']
+```
+
 
 
