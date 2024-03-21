@@ -4,9 +4,9 @@
 
 ```sh
 deploy
-├── exporter							# exporter 部署文档
+├── exporter				# exporter 部署文档
 ├── kube-state-metrics		# 监控 kubernetes
-├── rules									# 告警规则
+├── rules					# 告警规则
 ```
 
 ---
