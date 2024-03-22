@@ -10,9 +10,9 @@ wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0
 放在data1:`/usr/share/cassandra/lib/jmx_prometheus_javaagent-0.19.0.jar`
 
 2.1  配置修改1
+` /etc/cassandra/conf/cassandra-jmx.yaml`
 
 ```sh
-cat <<EOF > /etc/cassandra/conf/cassandra-jmx.yaml
 lowercaseOutputLabelNames: true
 lowercaseOutputName: true
 whitelistObjectNames: ["org.apache.cassandra.metrics:*"]
@@ -72,7 +72,6 @@ rules:
     "$2": "$3"
     quantile: "0.$6"
     
-EOF
 ```
 
 
