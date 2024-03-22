@@ -7,6 +7,7 @@
 ```sh
 wget https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.19.0/jmx_prometheus_javaagent-0.19.0.jar
 ```
+放在data1:`/usr/share/cassandra/lib/jmx_prometheus_javaagent-0.19.0.jar`
 
 2. 修改配置：
 
