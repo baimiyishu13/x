@@ -72,10 +72,12 @@ curl $APISERVER/api/v1/nodes/tw-worker1:10250/proxy/metrics --header "Authorizat
 
 配置项：
 
-🔔 sed 修改信息后，复制到监控抓取配置
+🔔 修改 `master1` 位 master节点IP
+
+sed 修改信息后，复制到监控抓取配置  
 
 ```sh
-sed -i 's/10.61.200.222/master1-IP/g' config.yaml
+sed -i 's/1.1.1.1/master1/g' vmagent.yml
 ```
 
 修改为Nodeport端口
