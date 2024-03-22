@@ -43,6 +43,8 @@ db.createUser({
 
 创建service文件
 
+‼️ 修改证书路径 和 IP
+
 ```sh
 cat <<EOF > /etc/systemd/system/mongodb_exporter.service
 [Unit]
