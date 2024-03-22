@@ -7,11 +7,7 @@
 ```sh
 bitnami/kube-state-metrics:1.6.0
 ```
-上传到worker1节点,使用sed 修改deployment.yaml 中 worker节点名称
-```shell
-# kubernetes.io/hostname: tw-worker1
-sed -i 's/tw-worker1/worker-hostname/g' deployment.yaml
-```
+上传到所有worker节点
 
 🎉 完成上述步骤再继续
 

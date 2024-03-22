@@ -104,8 +104,6 @@ spec:
       labels:
         app: kube-state-metrics
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: tw-worker1
       containers:
         - image: bitnami/kube-state-metrics:1.6.0
           imagePullPolicy: IfNotPresent
