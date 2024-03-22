@@ -1,7 +1,8 @@
 🎉 特定环境，每个节点 `/etc/ssl/etcd/ssl` 有etcd 证书
 
 + 将以下配置写入：`vmagent.yaml`
-+ 🔔 修改 `etcd-ip`
+
+‼️ 注意修改证书名为实际证书名，修改 `etcd-ip`
 
 ```sh
   - job_name: "etcd"
