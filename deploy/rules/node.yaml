@@ -1,44 +1,50 @@
 # 主机和硬件相关的告警规则
 groups:
-  - name: 磁盘使用率告警
-    rules:
-      - alert: 磁盘使用率告警
-        expr: floor(((node_filesystem_size_bytes{heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"} - node_filesystem_free_bytes) * 100) / (node_filesystem_avail_bytes + node_filesystem_size_bytes - node_filesystem_free_bytes)) > 85
-        for: 1m
-        labels:
-          severity: 严重
-        annotations:
-          summary: "磁盘使用率超过85% (实例 {{ $labels.instance }})"
-          description: "设备 {{ $labels.device }} 挂载在 {{ $labels.mountpoint }} 的磁盘使用率超过了 85%。(当前值: {{ $value }}%)"
+# 磁盘使用率告警
+- name: 磁盘使用率告警
+  rules:
+    - alert: 磁盘使用率告警
+      expr: floor(((node_filesystem_size_bytes{heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"} - node_filesystem_free_bytes) * 100) / (node_filesystem_avail_bytes + node_filesystem_size_bytes - node_filesystem_free_bytes)) > 85
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "磁盘使用率超过85% (实例 {{ $labels.instance }})"
+        description: "设备 {{ $labels.device }} 挂载在 {{ $labels.mountpoint }} 的磁盘使用率超过了 85%。(当前值: {{ $value }}%)"
 
-  - name: 内存告警规则
-    rules:
-      - alert: "内存使用率告警"
-        expr: floor((node_memory_MemTotal_bytes{heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"} - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) / node_memory_MemTotal_bytes * 100) > 85
-        for: 3m
-        labels:
-          severity: 严重
-        annotations:
-          summary: "内存使用率超过85% (实例 {{ $labels.instance }})"
-          description: "内存资源利用率大于85%! (当前值: {{ $value }}%)"
+# 内存使用率告警
+- name: 内存告警规则
+  rules:
+    - alert: "内存使用率告警"
+      expr: floor((node_memory_MemTotal_bytes{heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"} - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) / node_memory_MemTotal_bytes * 100) > 85
+      for: 3m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "内存使用率超过85% (实例 {{ $labels.instance }})"
+        description: "内存资源利用率大于85%! (当前值: {{ $value }}%)"
 
-  - name: CPU报警规则
-    rules:
-      - alert: CPU使用率告警
-        expr: floor(100 * (1 - avg(irate(node_cpu_seconds_total{mode="idle",heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"}[3m])) by (instance, datacenter))) > 85
-        for: 3m
-        labels:
-          severity: 严重
-        annotations:
-          summary: "CPU报警使用率超过85% (实例  {{ $labels.instance }})"
-          description: "CPU使用率超过了85%! (当前值: {{ $value }}%)"
+# CPU使用率告警
+- name: CPU报警规则
+  rules:
+    - alert: CPU使用率告警
+      expr: floor(100 * (1 - avg(irate(node_cpu_seconds_total{mode="idle",heihutao!~"heihutao-tw-dev|heihutao-tw-test|heihutao-tw-dp"}[3m])) by (instance, datacenter))) > 85
+      for: 3m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "CPU报警使用率超过85% (实例  {{ $labels.instance }})"
+        description: "CPU使用率超过了85%! (当前值: {{ $value }}%)"
 
 #磁盘几乎耗尽了可用 inode（剩余 < 10%）
-      - alert: "磁盘inode告警"
-        expr: (node_filesystem_files_free{fstype!="msdosfs"} / node_filesystem_files{fstype!="msdosfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}
-        for: 2m
-        labels:
-          severity: warning
-        annotations:
-            summary: "磁盘inode告警 (实例 {{ $labels.instance }})"
-            description: "设备 {{ $labels.device }} 挂载在 {{ $labels.mountpoint }} 的磁盘几乎耗尽了可用 inode（剩余 < 10%）。(当前值: {{ $value }}%)"
+- name: 磁盘inode告警
+  rules:
+    - alert: "磁盘inode告警"
+      expr: (node_filesystem_files_free{fstype!="msdosfs"} / node_filesystem_files{fstype!="msdosfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0) * on(instance) group_left (nodename) node_uname_info{nodename=~".+"}
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+          summary: "磁盘inode告警 (实例 {{ $labels.instance }})"
+          description: "设备 {{ $labels.device }} 挂载在 {{ $labels.mountpoint }} 的磁盘几乎耗尽了可用 inode（剩余 < 10%）。(当前值: {{ $value }}%)"
+

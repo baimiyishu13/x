@@ -1,0 +1,36 @@
+groups:
+#  Elasticsearch 堆使用率过高
+- name: Elasticsearch 堆使用率过高
+  rules:
+  - alert: Elasticsearch 堆使用率过高
+    expr: (elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"}) * 100 > 85
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "Elasticsearch 堆使用率过高 (实例 {{ $labels.instance }})"
+      description: "Elasticsearch 堆使用率超过了 85%。(当前值: {{ $value }}%)"
+
+#  Elasticsearch 磁盘空间不足
+- name: Elasticsearch 磁盘空间不足
+  rules:
+  - alert: Elasticsearch 磁盘空间不足
+    expr: elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes * 100 < 10
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "Elasticsearch 磁盘空间不足 (实例 {{ $labels.instance }})"
+      description: "Elasticsearch 磁盘空间不足。(当前值: {{ $value }}%)"
+
+#  elasticsearch_cluster_health_status{color="red"}
+- name: Elasticsearch 集群健康状态
+  rules:
+  - alert: Elasticsearch 集群健康状态
+    expr: elasticsearch_cluster_health_status{color="red"}
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "Elasticsearch 集群健康状态 (实例 {{ $labels.instance }})"
+      description: "Elasticsearch 集群健康状态为 red。"

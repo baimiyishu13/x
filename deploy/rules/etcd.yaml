@@ -1,0 +1,132 @@
+groups:
+#etcd集群没有领导者
+- name: etcd 集群没有领导者
+  rules:
+    - alert: etcd 集群没有领导者
+      expr: etcd_server_has_leader == 0
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "etcd 集群没有领导者 (实例 {{ $labels.instance }})"
+        description: "etcd 集群没有领导者。"
+
+# 在 Etcd 中检测到超过 5% 的 HTTP 故障
+- name: Etcd 中检测到超过 5% 的 HTTP 故障
+  rules:
+    - alert: Etcd 中检测到超过 5% 的 HTTP 故障
+      expr: sum(rate(etcd_http_failed_total[1m])) BY (method) / sum(rate(etcd_http_received_total[1m])) BY (method) > 0.05
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 中检测到超过 5% 的 HTTP 故障 (实例 {{ $labels.instance }})"
+        description: "在 Etcd 中检测到超过 5% 的 HTTP 故障。"
+
+# Etcd成员通信变慢，第99个百分位数超过0.15秒
+- name: Etcd成员通信变慢
+  rules:
+    - alert: Etcd成员通信变慢
+      expr: histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) > 0.15
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd成员通信变慢 (实例 {{ $labels.instance }})"
+        description: "Etcd成员通信变慢，第99个百分位数超过0.15秒。"
+
+# Etcd 服务器过去一小时收到超过 5 个失败的提案
+- name: Etcd 服务器过去一小时收到超过 5 个失败的提案
+  rules:
+    - alert: Etcd 服务器过去一小时收到超过 5 个失败的提案
+      expr: increase(etcd_server_proposals_failed_total[1h]) > 5
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 服务器过去一小时收到超过 5 个失败的提案 (实例 {{ $labels.instance }})"
+        description: "Etcd 服务器过去一小时收到超过 5 个失败的提案。"
+
+# Etcd WAL fsync 持续时间增加，第 99 个百分位数超过 0.5 秒[复制]
+- name: Etcd WAL fsync 持续时间增加
+  rules:
+    - alert: Etcd WAL fsync 持续时间增加
+      expr: histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) > 0.5
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd WAL fsync 持续时间增加 (实例 {{ $labels.instance }})"
+        description: "Etcd WAL fsync 持续时间增加，第 99 个百分位数超过 0.5 秒。"
+
+# Etcd 提交持续时间增加，第 99 个百分位超过 0.25 秒
+- name: Etcd 提交持续时间增加
+  rules:
+    - alert: Etcd 提交持续时间增加
+      expr: histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket[1m])) > 0.25
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 提交持续时间增加 (实例 {{ $labels.instance }})"
+        description: "Etcd 提交持续时间增加，第 99 个百分位超过 0.25 秒。"
+
+# HTTP 请求变慢，第 99 个百分位数超过 0.15 秒
+- name: HTTP 请求变慢
+  rules:
+  - alert: HTTP 请求变慢
+    expr: histogram_quantile(0.99, rate(etcd_http_successful_duration_seconds_bucket[1m])) > 0.15
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "HTTP 请求变慢 (实例 {{ $labels.instance }})"
+      description: "HTTP 请求变慢，第 99 个百分位数超过 0.15 秒。"
+
+# Etcd 中检测到超过 1% 的 HTTP 故障
+- name: Etcd 中检测到超过 1% 的 HTTP 故障
+  rules:
+  - alert: Etcd 中检测到超过 1% 的 HTTP 故障
+    expr: sum(rate(etcd_http_failed_total[1m])) BY (method) / sum(rate(etcd_http_received_total[1m])) BY (method) > 0.01
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "Etcd 中检测到超过 1% 的 HTTP 故障 (实例 {{ $labels.instance }})"
+      description: "在 Etcd 中检测到超过 1% 的 HTTP 故障。"
+
+# Etcd 中检测到超过 5% 的 GRPC 请求失败
+- name: Etcd 中检测到超过 5% 的 GRPC 请求失败
+  rules:
+    - alert: Etcd 中检测到超过 5% 的 GRPC 请求失败
+      expr: sum(rate(grpc_server_handled_total{grpc_code!="OK"}[1m])) BY (grpc_service, grpc_method) / sum(rate(grpc_server_handled_total[1m])) BY (grpc_service, grpc_method) > 0.05
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 中检测到超过 5% 的 GRPC 请求失败 (实例 {{ $labels.instance }})"
+        description: "在 Etcd 中检测到超过 5% 的 GRPC 请求失败。"
+
+# Etcd 中检测到超过 1% 的 GRPC 请求失败
+- name: Etcd 中检测到超过 1% 的 GRPC 请求失败
+  rules:
+    - alert: Etcd 中检测到超过 1% 的 GRPC 请求失败
+      expr: sum(rate(grpc_server_handled_total{grpc_code!="OK"}[1m])) BY (grpc_service, grpc_method) / sum(rate(grpc_server_handled_total[1m])) BY (grpc_service, grpc_method) > 0.01
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 中检测到超过 1% 的 GRPC 请求失败 (实例 {{ $labels.instance }})"
+        description: "在 Etcd 中检测到超过 1% 的 GRPC 请求失败。"
+
+# Etcd 领导者在 10 分钟内更换了 2 次以上
+- name: Etcd 领导者在 10 分钟内更换了 2 次以上
+  rules:
+    - alert: Etcd 领导者在 10 分钟内更换了 2 次以上
+      expr: increase(etcd_server_leader_changes_seen_total[10m]) > 2
+      for: 1m
+      labels:
+        severity: 严重
+      annotations:
+        summary: "Etcd 领导者在 10 分钟内更换了 2 次以上 (实例 {{ $labels.instance }})"
+        description: "Etcd 领导者在 10 分钟内更换了 2 次以上。"

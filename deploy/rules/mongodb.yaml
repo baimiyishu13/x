@@ -1,0 +1,11 @@
+groups:
+- name: MongoDB 宕机
+  rules:
+  - alert: MongoDB 宕机
+    expr: mongodb_up == 0
+    for: 1m
+    labels:
+      severity: 严重
+    annotations:
+      summary: "MongoDB 宕机 (实例 {{ $labels.instance }})"
+      description: "MongoDB 实例 {{ $labels.instance }} 宕机。"
